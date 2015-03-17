@@ -41,3 +41,29 @@ regressionLineBaltimore = lm(totalEmissionsPerYearInBaltimore$x ~ totalEmissions
 abline(regressionLineBaltimore)
 
 dev.off()
+
+################
+## Question 3 ##
+################
+
+# ~~uncomment me before submission~~
+# NEI <- readRDS("summarySCC_PM25.rds")
+# SCC <- readRDS("Source_Classification_Code.rds")
+
+png("plot3.png")
+
+# install.packages('data.table')
+
+library(ggplot2)
+
+require(data.table)
+
+baltimoreOnly = NEI[NEI$fips == "24510",]
+
+baltimoreOnlyTable <- data.table(baltimoreOnly)
+
+aggregatedBaltimoreOnlyTable <- baltimoreOnlyTable[, list(totalEmissions = sum(Emissions)), by = list(year,type )]
+
+ggplot(aggregatedBaltimoreOnlyTable, aes(year, y = totalEmissions, color = type)) + geom_point() + geom_line()
+
+dev.off()
